@@ -1,36 +1,4 @@
 #CLASS 0
-#VAR Tar {} {} VAR
-#VAR Tar2 {} {} VAR
-
-#VAR Messages_MissedAttack {} {} VAR
-#ADDI Messages_MissedAttack "You miss"
-#ADDI Messages_MissedAttack "You fire off"
-#ADDI Messages_MissedAttack "You completely miss"
-#ADDI Messages_MissedAttack "You fail to hit"
-#ADDI Messages_MissedAttack "You smash the ground near"
-#ADDI Messages_MissedAttack "You swing the axe at"
-#ADDI Messages_MissedAttack "by a hair's breadth."
-#ADDI Messages_MissedAttack "You curse under your breath as your sweep barely misses"
-
-#VAR Messages_Combat {} {} VAR
-#ADDI Messages_Combat "You attack"
-#ADDI Messages_Combat "You are too busy to make an attack!"
-#ADDI Messages_Combat "You are attacked by"
-
-#VAR Messages_Wimpy_On {} {} VAR
-#ADDI Messages_Wimpy_On "You feel like a wimp."
-#ADDI Messages_Wimpy_On "How much wimpier can you get?!"
-
-#VAR Messages_Wimpy_Off {} {} VAR
-#ADDI Messages_Wimpy_Off "You don't feel like a wimp anymore."
-#ADDI Messages_Wimpy_Off "You're no wimp!"
-
-#VAR Messages_Wimpy {} {} VAR
-#ADDI Messages_Wimpy "You feel like a wimp."
-#ADDI Messages_Wimpy "How much wimpier can you get?!"
-#ADDI Messages_Wimpy "You don't feel like a wimp anymore."
-#ADDI Messages_Wimpy "You're no wimp!"
-
 $CLASS = "Tools|Combat|Settings"
 #TR Wimpy {^({@Messages_Wimpy})} {
 #SW (%ismember(%1,@Messages_Wimpy_On)) {#VAR wimpy {1} {} VAR} {#VAR wimpy {0} {} VAR}
