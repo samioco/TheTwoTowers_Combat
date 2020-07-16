@@ -1,0 +1,117 @@
+#CLASS 0
+#VAR Tar {} {} VAR
+#VAR Tar2 {} {} VAR
+
+#VAR Messages_MissedAttack {} {} VAR
+#ADDI Messages_MissedAttack "You miss"
+#ADDI Messages_MissedAttack "You fire off"
+#ADDI Messages_MissedAttack "You completely miss"
+#ADDI Messages_MissedAttack "You fail to hit"
+#ADDI Messages_MissedAttack "You smash the ground near"
+#ADDI Messages_MissedAttack "You swing the axe at"
+#ADDI Messages_MissedAttack "by a hair's breadth."
+#ADDI Messages_MissedAttack "You curse under your breath as your sweep barely misses"
+
+#VAR Messages_Combat {} {} VAR
+#ADDI Messages_Combat "You attack"
+#ADDI Messages_Combat "You are too busy to make an attack!"
+#ADDI Messages_Combat "You are attacked by"
+
+#VAR Messages_Wimpy_On {} {} VAR
+#ADDI Messages_Wimpy_On "You feel like a wimp."
+#ADDI Messages_Wimpy_On "How much wimpier can you get?!"
+
+#VAR Messages_Wimpy_Off {} {} VAR
+#ADDI Messages_Wimpy_Off "You don't feel like a wimp anymore."
+#ADDI Messages_Wimpy_Off "You're no wimp!"
+
+#VAR Messages_Wimpy {} {} VAR
+#ADDI Messages_Wimpy "You feel like a wimp."
+#ADDI Messages_Wimpy "How much wimpier can you get?!"
+#ADDI Messages_Wimpy "You don't feel like a wimp anymore."
+#ADDI Messages_Wimpy "You're no wimp!"
+
+$CLASS = "Tools|Combat|Settings"
+#TR Wimpy {^({@Messages_Wimpy})} {
+#SW (%ismember(%1,@Messages_Wimpy_On)) {#VAR wimpy {1} {} VAR} {#VAR wimpy {0} {} VAR}
+} $CLASS
+
+#TR PartyLeaderAttacksTar {^@PartyLeader attacks %proper(@Tar)} {
+MyProfileVars
+#WAIT 500
+PKCombat
+} $CLASS
+
+#TR TargetHasDied {%proper(@Tar) has died.} {
+BEEP2
+r1
+SysMsg {Target %proper(@Tar) died at room (r1): @r1}
+#T- PVP|Settings
+PKOff
+#IF ((@Party) AND (@PartyLeader=@MyName)) {FollowOff}
+} $CLASS
+
+#TR TargetMerciful {Feeling merciful towards your victim, you cease} {
+BEEP2
+#CW high,red,blink
+r1
+SysMsg %proper(@Tar) fell at room: @r1
+PKOff
+#IF ((@Party) AND (@PartyLeader=@MyName)) {FollowOff}
+} $CLASS
+
+#TR YouHaveDied {^You have died.} {
+#CW high,red,blink
+PKOff
+r1
+SysMsg You died at room: %roomname, %roomnum, %roomid, @r1
+ActionClear
+StealStop
+Grinderstop
+RESET_Gear
+} $CLASS
+
+#TR AttackedByPlayer {^You are attacked by %1!} {
+#CW high,blink,red
+BEEP3
+do wimpy off,focus dodge,focus defense
+travelto resume quickly
+PK_Bot_React
+} $CLASS
+
+
+#TR AttackedByTarget {^You are attacked by %proper(@Tar)!} {
+#IF (@MyProf="wizard") {#T+ WizardAttackAfterStrike}
+PKOn
+AHB_ZoneDetection
+} $CLASS
+
+#TR YouAttackTarget {^You attack %proper(@Tar).} {
+#IF (@MyProf="wizard") {#T+ WizardAttackAfterStrike}
+PKOn
+AHB_ZoneDetection
+} $CLASS
+
+#TR BackstabbedByPlayer {^Without Warning, %1 stabs you from behind!} {
+#CW high,blink,red
+do wimpy off,focus dodge,focus defense,travelto resume quickly
+} $CLASS
+
+#TR BackstabFailedByPlayer {^You hear %1 sneaking up behind you, suddenly you spin and throw {"her|him"} to the ground.} {
+#CW high,blink,red
+do wimpy off,focus dodge,focus defense,travelto resume quickly
+} $CLASS
+
+#TR ShelobAttacksYou {Shelob attacks you.} {
+do wimpy off,focus dodge,focus defense
+ringon
+} $CLASS
+
+#TR ShelobEnters {Shelob enters.} {
+#IF (@Wimpy) {wimpy off}
+} $CLASS
+
+#TR GoldScoredRingLowEP {You feel drained, as if you have lost blood.} {
+do put all scored ring in cloak,put all scored ring in pack
+} $CLASS
+#CLASS 0
