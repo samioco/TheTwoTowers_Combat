@@ -1,4 +1,4 @@
-#CLASS 0
+//RESET_CombatSettings#CLASS 0#AL RESET_CombatSettings {#CLASS 0
 $CLASS = "Tools|Combat|Settings"
 #TR Wimpy {^({@Messages_Wimpy})} {
 #SW (%ismember(%1,@Messages_Wimpy_On)) {#VAR wimpy {1} {} VAR} {#VAR wimpy {0} {} VAR}
@@ -82,4 +82,4 @@ ringon
 #TR GoldScoredRingLowEP {You feel drained, as if you have lost blood.} {
 do put all scored ring in cloak,put all scored ring in pack
 } $CLASS
-#CLASS 0
+#CLASS 0} _Combat#CLASS 0

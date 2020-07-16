@@ -1,4 +1,4 @@
-#CLASS 0
+//RESET_CombatVariables#CLASS 0#AL RESET_CombatVariables {#CLASS 0
 #VAR Tar {} {} VAR
 #VAR Tar2 {} {} VAR
 
@@ -32,3 +32,4 @@
 #ADDI Messages_Wimpy "You're no wimp!"
 
 #CLASS 0
+} _Combat#CLASS 0
