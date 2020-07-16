@@ -1,0 +1,100 @@
+#CLASS 0
+$CLASS = "Tools|Combat|EXE"
+#VAR PK {} {} VAR
+
+#AL PKOn {
+$MyProf=%lower(@MyProf)
+#VAR PK {1} {} VAR
+#SW ($MyProf="assassin") {#T+ Combat_Assassin_StabAfterStrike
+} ($MyProf="wizard") {#T+ Combat_Wizard_AttackAfterStrike}
+FollowOn
+SysMsg PK ON!
+} $CLASS
+
+#AL PKOff {
+#VAR PK {} {} VAR
+#T- Combat_Assassin_StabAfterStrike
+#T- Combat_Wizard_AttackAfterStrike
+FollowOff
+SysMsg PK OFF!
+} $CLASS
+
+#AL PK {
+#IF (@PK) {PKOff} {PKOn}
+} $CLASS
+
+#AL PKPrep {
+MyProfileVars
+$MyProf=%lower(@MyProf)
+$action=""
+#SW ($MyProf="rider") {$action="do warcry,kill"
+} ($MyProf="wizard") {$action=%concat("do draw runed staff,wield runed staff,hold ",@MyWep_ID,",strike")
+} ($MyProf="assassin") {$action="hunt"
+} {$action="kill"}
+$exe=%concat("trigger ",%proper(@Tar)," todo ",$action," ",%lower(@Tar))
+#EXE {$exe}
+FollowOff
+#SW ($MyProf="assassin") {#T+ Combat_Assassin_StabAfterStrike
+} ($MyProf="wizard") {#T+ Combat_Wizard_AttackAfterStrike}
+#IF (%lower(@PartyLeader)=%lower(@MyName)) {party say PKPrep}
+} $CLASS
+
+#AL PKCombat {
+MyProfileVars
+$MyProf=@MyProf
+$action=""
+#SW ($MyProf="warrior") {$action="headbutt"
+} ($MyProf="sniffer") {$action="shiv"
+} ($MyProf="ranger") {$action="feint"
+} ($MyProf="rider") {$action="do warcry,trample"
+} {$action="kill"
+}
+$exe=%concat("trigger ",%proper(@Tar)," todo ",$action," ",%lower(@Tar))
+#EXE {$exe}
+FollowOn
+} $CLASS
+
+#AL PK_Bot_React {
+$Stealer=%lower(@Stealer)
+#SW ($Stealer) {
+  StealStop
+  dh
+  #SW (%begins($Stealer,"Stealerbd_")) {
+    #WALK SOTE;touch altar
+    #WALK BDGate;do enter,5evade,out,enter,5evade,enter,5evade,out
+  } (%pos(%lower("Carchost"),$Stealer)) {
+    car1
+  } (%pos(%lower("Narchost"),$Stealer)) {
+    nar1
+  #WALK narh;donate 60
+  } (%pos(%lower("CirithUngol"),$Stealer)) {
+    #WALK CUBalcony
+    leap off balcony
+    #WALK CUBalcony
+    leap off balcony
+    #WALK CUH
+    request healing
+  } (%pos(%lower("MorgulGate"),$Stealer)) {
+    #WALK MorgOut
+    2knock on gate
+    5evade
+    e
+    2knock on gate
+    5evade
+  } (%pos(%lower("MinasTirith"),$Stealer)) {
+    GoSP
+    disguise align off
+    #WALK Morg
+    Morg1
+  }
+  ActionAdd "GoMyBox;rest"
+  ActionAdd "GoSP;Morg1;HealMe"
+  MoveMe_To_Arda
+} (@HealStat) {
+  HealStop
+  GoSP
+  GoMyBox
+  rest
+}
+} $CLASS
+#CLASS 0
