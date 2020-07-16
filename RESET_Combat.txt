@@ -1,0 +1,5 @@
+#CLASS 0
+RESET_CombatVariables
+RESET_CombatSettings
+RESET_CombatEXE
+#CLASS 0
